@@ -11,7 +11,18 @@ namespace HotelListing.IRepository
         Task<IList<T>> GetAll(
             Expression<Func<T, bool>> expression = null,
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            List<string> includes = Nullable
+            List<string> includes = null 
             );
+
+        Task<T> Get(
+             Expression<Func<T, bool>> expression = null,
+            List<string> includes = null
+            );
+
+        Task Delete(int id);
+        Task Insert(T entity);
+        Task InsertRange(IEnumerable<T> entities);
+        void Update(T entity);
+        void DeleteRange(IEnumerable<T> entities);
     }
 }
