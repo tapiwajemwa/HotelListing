@@ -11,6 +11,7 @@ namespace HotelListing.Data
 
         }
 
+        //we might not need to use this model if our database already have values
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Country>().HasData(

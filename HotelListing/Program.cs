@@ -44,7 +44,6 @@ namespace HotelListing
             .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    
                     webBuilder.UseStartup<Startup>();
                 });
     }

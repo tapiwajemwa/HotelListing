@@ -1,6 +1,8 @@
 using AutoMapper;
 using HotelListing.Configurations;
 using HotelListing.Data;
+using HotelListing.IRepository;
+using HotelListing.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,11 +32,12 @@ namespace HotelListing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //connecting to the sql server that has been configured in appsettings.json
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("sqlConnection"))
             );
             
+            //adding cors to allow other hosts to connect
             services.AddCors(o =>
             {
                 o.AddPolicy("AllowAll", builder =>
@@ -43,6 +46,7 @@ namespace HotelListing
                 });
             });
 
+            //added to configure automapper
             services.AddAutoMapper(typeof(MapperInitializer));
 
             services.AddSwaggerGen(c =>
@@ -50,6 +54,8 @@ namespace HotelListing
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListing", Version = "v1" });
             });
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddControllers().AddNewtonsoftJson(op => op.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddControllers();
         }
 
